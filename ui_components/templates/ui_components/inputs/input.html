@@ -1,0 +1,15 @@
+{% load widget_tweaks %}
+{% load ui_components %}
+
+{% if field|ui_input_type == 'Select' %}
+	<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+	{{ field|add_class:"chosen-select"|attr:"data-placeholder:--- Seleccionar ---" }}
+{% elif field|ui_input_type == 'CheckboxSelectMultiple' %}
+	{% for checkbox in field %}
+	{{ checkbox.tag }}
+    <label for="{{checkbox.id_for_label}}">{{ checkbox.choice_label }}</label>				    
+	{% endfor %}
+{% else %}
+	<label for="{{ field.id_for_label }}">{{ field.label }} <i class="fa fa-{{ icon }}"></i></label>
+	{{ field }}
+{% endif %}
