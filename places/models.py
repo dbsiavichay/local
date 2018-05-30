@@ -1,9 +1,12 @@
 from django.db import models
 
 class Category(models.Model):
-	name = models.CharField(max_length=64)
-	icon = models.CharField(max_length=32)
-	is_for_local = models.BooleanField(default=False)
+	class Meta:
+		verbose_name = 'categoría'
+
+	name = models.CharField(max_length=64, verbose_name='nombre')
+	icon = models.CharField(max_length=32, verbose_name='icono')
+	is_for_local = models.BooleanField(default=False, verbose_name='de local?')
 
 	def __str__(self):
 		return self.name
