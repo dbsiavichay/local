@@ -1,5 +1,11 @@
 from django.db import models
 
+class Tag(models.Model):
+	name = models.CharField(max_length=16)
+
+	def __str__(self):
+		return self.name
+
 class Category(models.Model):
 	class Meta:
 		verbose_name = 'categoría'
@@ -7,12 +13,6 @@ class Category(models.Model):
 	name = models.CharField(max_length=64, verbose_name='nombre')
 	icon = models.CharField(max_length=32, verbose_name='icono')
 	is_for_local = models.BooleanField(default=False, verbose_name='de local?')
-
-	def __str__(self):
-		return self.name
-
-class Tag(models.Model):
-	name = models.CharField(max_length=16)
 
 	def __str__(self):
 		return self.name
@@ -33,6 +33,7 @@ class Place(models.Model):
 
 	def __str__(self):
 		return self.name
+
 
 class Network(models.Model):
 	class Meta:
