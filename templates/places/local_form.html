@@ -326,17 +326,16 @@
                     <!-- profile-edit-container--> 
                     <div class="profile-edit-container">
                         <div class="profile-edit-header fl-wrap" style="margin-top:30px">
-                            <h4>Socials</h4>
+                            <h4>Redes Sociales</h4>
                         </div>
                         <div class="custom-form">
-                            <label>Facebook <i class="fa fa-facebook"></i></label>
-                            <input type="text" placeholder="https://www.facebook.com/" value=""/>
-                            <label>Twitter<i class="fa fa-twitter"></i>  </label>
-                            <input type="text" placeholder="https://twitter.com/" value=""/>
-                            <label>Vkontakte<i class="fa fa-vk"></i>  </label>
-                            <input type="text" placeholder="vk.com" value=""/>
-                            <label> Whatsapp <i class="fa fa-whatsapp"></i>  </label>
-                            <input type="text" placeholder="https://www.whatsapp.com" value=""/>
+                            {% for network in form.networks.field.queryset %}                            
+                            <label>{{ network.name }} <i class="fa fa-{{ network.icon }}"></i></label>
+                            <input type="url" placeholder="{{ network.url }}" value=""/>
+                            {% endfor %}
+
+
+                            
                             <button class="btn  big-btn  color-bg flat-btn">Save Changes<i class="fa fa-angle-right"></i></button>
                         </div>
                     </div>
