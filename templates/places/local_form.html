@@ -44,302 +44,93 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Información básica</h4>
-                        </div>
-                        <div class="custom-form">
-                            {% ui_input form.name 'briefcase' %}
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {% ui_input form.category %}
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Keywords <i class="fa fa-key"></i></label>
-                                    <input type="text" placeholder="Maximum 15, should be separated by commas" value=""/>
-                                </div>
+                    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <!-- profile-edit-container--> 
+                        <div class="profile-edit-container add-list-container">
+                            <div class="profile-edit-header fl-wrap">
+                                <h4>Información básica</h4>
                             </div>
+                            <div class="custom-form">
+                                {% ui_input form.name 'briefcase' %}
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {% ui_input form.category %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Keywords <i class="fa fa-key"></i></label>
+                                        <input type="text" placeholder="Maximum 15, should be separated by commas" value=""/>
+                                    </div>
+                                </div>
 
-                            {% ui_input form.description %}
+                                {% ui_input form.description %}
+                            </div>
                         </div>
-                    </div>
-                    <!-- profile-edit-container end--> 
+                        <!-- profile-edit-container end--> 
 
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Localización /  Contactos</h4>
-                        </div>
-                        <div class="custom-form">
-                            {% ui_input form.address 'map-marker' %}
-                            
-                            <label>Location</label>
-                            <select data-placeholder="Location" class="chosen-select" >
-                                <option>All Locations</option>
-                                <option>Bronx</option>
-                                <option>Brooklyn</option>
-                                <option>Manhattan</option>
-                                <option>Queens</option>
-                                <option>Staten Island</option>
-                            </select>
+                        <!-- profile-edit-container--> 
+                        <div class="profile-edit-container add-list-container">
+                            <div class="profile-edit-header fl-wrap">
+                                <h4>Localización /  Contactos</h4>
+                            </div>
+                            <div class="custom-form">
+                                {% ui_input form.address 'map-marker' %}
+                                
+                                <label>Location</label>
+                                <select data-placeholder="Location" class="chosen-select" >
+                                    <option>All Locations</option>
+                                    <option>Bronx</option>
+                                    <option>Brooklyn</option>
+                                    <option>Manhattan</option>
+                                    <option>Queens</option>
+                                    <option>Staten Island</option>
+                                </select>
 
-                            {% ui_input form.phone 'phone' %}
-                            {% ui_input form.mail 'envelope-o' %}
-                            {% ui_input form.webpage 'globe' %}
-                                                        
-                        </div>
-                    </div>
-                    <!-- profile-edit-container end-->                                         
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Header Media</h4>
-                        </div>
-                        <div class="custom-form">
-                            <div class="row">
-                                <!--col --> 
-                                <div class="col-md-4">
-                                    <div class="add-list-media-header">
-                                        <label class="radio inline"> 
-                                        <input type="radio" name="gender"  checked>
-                                        <span>Background image</span> 
-                                        </label>
-                                    </div>
-                                    <div class="add-list-media-wrap">
-                                        <form   class="fuzone">
-                                            <div class="fu-text">
-                                                <span><i class="fa fa-picture-o"></i> Click here or drop files to upload</span>
-                                            </div>
-                                            <input type="file" class="upload">
-                                        </form>
-                                    </div>
-                                </div>
-                                <!--col end--> 
-                                <!--col --> 
-                                <div class="col-md-4">
-                                    <div class="add-list-media-header">
-                                        <label class="radio inline"> 
-                                        <input type="radio" name="gender">
-                                        <span>Carousel</span> 
-                                        </label>
-                                    </div>
-                                    <div class="add-list-media-wrap">
-                                        <form   class="fuzone">
-                                            <div class="fu-text">
-                                                <span><i class="fa fa-picture-o"></i> Click here or drop files to upload</span>
-                                            </div>
-                                            <input type="file" class="upload">
-                                        </form>
-                                    </div>
-                                </div>
-                                <!--col end--> 
-                                <!--col --> 
-                                <div class="col-md-4">
-                                    <div class="add-list-media-header">
-                                        <label class="radio inline"> 
-                                        <input type="radio" name="gender">
-                                        <span>Video</span> 
-                                        </label>
-                                    </div>
-                                    <div class="add-list-media-wrap">
-                                        <label>Youtube  <i class="fa fa-youtube"></i></label>
-                                        <input type="text" placeholder="https://www.youtube.com/" value=""/>   
-                                        <label>Vimeo <i class="fa fa-vimeo"></i></label>
-                                        <input type="text" placeholder="https://vimeo.com/" value=""/> 
-                                        <div class="change-photo-btn">
-                                            <div class="photoUpload">
-                                                <span><i class="fa fa-upload"></i> Upload Video</span>
-                                                <input type="file" class="upload">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--col end-->                                                   
+                                {% ui_input form.phone 'phone' %}
+                                {% ui_input form.mail 'envelope-o' %}
+                                {% ui_input form.webpage 'globe' %}
+                                                            
                             </div>
                         </div>
-                    </div>
-                    <!-- profile-edit-container end-->                                         
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Detailed Information</h4>
-                        </div>
-                        <div class="custom-form">
-                            <label>Description</label>
-                            <textarea cols="40" rows="3" placeholder=""></textarea>
-                            <!-- Checkboxes -->
-                            <div class=" fl-wrap filter-tags">
-                                <h4>Amenities </h4>
-                                <input id="check-a" type="checkbox" name="check">
-                                <label for="check-a">Elevator in building</label>
-                                <input id="check-b" type="checkbox" name="check">
-                                <label for="check-b">Friendly workspace</label>
-                                <input id="check-c" type="checkbox" name="check">
-                                <label for="check-c">Instant Book</label>
-                                <input id="check-d" type="checkbox" name="check">
-                                <label for="check-d">Wireless Internet</label>
+                        <!-- profile-edit-container end-->                                         
+
+                        <!-- profile-edit-container--> 
+                        <div class="profile-edit-container add-list-container">
+                            <div class="profile-edit-header fl-wrap">
+                                <h4>Detalles</h4>
                             </div>
-                        </div>
-                    </div>
-                    <!-- profile-edit-container end-->                                          
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Content Widgets</h4>
-                        </div>
-                        <div class="custom-form">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <!-- act-widget--> 
-                                    <div class="act-widget fl-wrap">
-                                        <div class="act-widget-header">
-                                            <h4>1. Promo video</h4>
-                                            <div class="onoffswitch">
-                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch5" checked>
-                                                <label class="onoffswitch-label" for="myonoffswitch5">
-                                                <span class="onoffswitch-inner"></span>
-                                                <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="add-list-media-wrap">
-                                            <form   class="fuzone">
-                                                <div class="fu-text">
-                                                    <span><i class="fa fa-picture-o"></i> Click here or drop files to upload</span>
-                                                </div>
-                                                <input type="file" class="upload">
-                                            </form>
-                                            <label>Video url :  <i class="fa fa-youtube"></i></label>
-                                            <input type="text" placeholder="https://www.youtube.com/" value=""/>   
-                                        </div>
-                                    </div>
-                                    <!-- act-widget end-->
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- act-widget--> 
-                                    <div class="act-widget fl-wrap">
-                                        <div class="act-widget-header">
-                                            <h4>2. Gallery Thumbnails</h4>
-                                            <div class="onoffswitch">
-                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch6" checked>
-                                                <label class="onoffswitch-label" for="myonoffswitch6">
-                                                <span class="onoffswitch-inner"></span>
-                                                <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="add-list-media-wrap">
-                                            <form  class="fuzone">
-                                                <div class="fu-text">
-                                                    <span><i class="fa fa-picture-o"></i> Click here or drop files to upload</span>
-                                                </div>
-                                                <input type="file" class="upload">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- act-widget end-->
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- act-widget--> 
-                                    <div class="act-widget fl-wrap">
-                                        <div class="act-widget-header">
-                                            <h4>3. Slider</h4>
-                                            <div class="onoffswitch">
-                                                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch7">
-                                                <label class="onoffswitch-label" for="myonoffswitch7">
-                                                <span class="onoffswitch-inner"></span>
-                                                <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="add-list-media-wrap">
-                                            <form   class="fuzone">
-                                                <div class="fu-text">
-                                                    <span><i class="fa fa-picture-o"></i> Click here or drop files to upload</span>
-                                                </div>
-                                                <input type="file" class="upload">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- act-widget end-->
+                            <div class="custom-form">                            
+                                <!-- Checkboxes -->
+                                <div class=" fl-wrap filter-tags">
+                                    <h4>Comodidades </h4>
+                                    {% ui_input form.amenities %}
+                                    
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- profile-edit-container end-->                                       
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container add-list-container">
-                        <div class="profile-edit-header fl-wrap">
-                            <h4>Sidebar Widgets</h4>
-                        </div>
-                        <div class="custom-form">
-                            <!-- act-widget--> 
-                            <div class="act-widget fl-wrap">
-                                <div class="act-widget-header">
-                                    <h4>1. Booking Form</h4>
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                                        <label class="onoffswitch-label" for="myonoffswitch">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
+                        <!-- profile-edit-container end-->                                                                              
+                                                                
+                        <!-- profile-edit-container--> 
+                        <div class="profile-edit-container">
+                            <div class="profile-edit-header fl-wrap" style="margin-top:30px">
+                                <h4>Redes Sociales</h4>
                             </div>
-                            <!-- act-widget end--> 
-                            <!-- act-widget--> 
-                            <div class="act-widget fl-wrap">
-                                <div class="act-widget-header">
-                                    <h4>2. Event Counter</h4>
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch2">
-                                        <label class="onoffswitch-label" for="myonoffswitch2">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <label>Event Date<i class="fa fa-calendar-o"></i></label>
-                                <input type="text" placeholder="Date Example : 09/12/2019" value=""/>        
-                            </div>
-                            <!-- act-widget end-->                                                    
-                            <!-- act-widget--> 
-                            <div class="act-widget fl-wrap">
-                                <div class="act-widget-header">
-                                    <h4>3. Working Hours</h4>
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch3" checked>
-                                        <label class="onoffswitch-label" for="myonoffswitch3">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <textarea cols="40" rows="3" placeholder="Details"></textarea>
-                            </div>
-                            <!-- act-widget end--> 
-                        </div>
-                    </div>
-                    <!-- profile-edit-container end-->                                         
-                    <!-- profile-edit-container--> 
-                    <div class="profile-edit-container">
-                        <div class="profile-edit-header fl-wrap" style="margin-top:30px">
-                            <h4>Redes Sociales</h4>
-                        </div>
-                        <div class="custom-form">
-                            {% for network in form.networks.field.queryset %}                            
-                            <label>{{ network.name }} <i class="fa fa-{{ network.icon }}"></i></label>
-                            <input type="url" placeholder="{{ network.url }}" value=""/>
-                            {% endfor %}
+                            <div class="custom-form">
+                                {% for network in form.networks.field.queryset %}                            
+                                <label>{{ network.name }} <i class="fa fa-{{ network.icon }}"></i></label>
+                                <input type="url" placeholder="{{ network.url }}" value=""/>
+                                {% endfor %}
 
 
-                            
-                            <button class="btn  big-btn  color-bg flat-btn">Save Changes<i class="fa fa-angle-right"></i></button>
+                                
+                                <button type="submit" class="btn big-btn  color-bg flat-btn">Guardar
+                                    <i class="fa fa-angle-right"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <!-- profile-edit-container end-->   
+                        <!-- profile-edit-container end--> 
+                    </form>  
                 </div>
             </div>
         </div>

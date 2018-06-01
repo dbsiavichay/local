@@ -29,7 +29,7 @@ class Place(models.Model):
 	pub_date = models.DateTimeField(auto_now_add=True)		
 	user = models.ForeignKey('auth.User', on_delete=models.CASCADE, verbose_name='publicado por')	
 	category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='categoria')
-	tags = models.ManyToManyField(Tag)
+	tags = models.ManyToManyField(Tag, blank=True)
 
 	def __str__(self):
 		return self.name
@@ -66,11 +66,11 @@ class Local(Place):
 	phone = models.CharField(max_length=16, blank=True, null=True, verbose_name='teléfono')
 	mail = models.EmailField(blank=True, null=True, verbose_name='correo electrónico')
 	webpage = models.URLField(blank=True, null=True, verbose_name='página web')	
-	networks = models.ManyToManyField(Network, through='LocalNetwork', verbose_name='redes sociales')
-	amenities = models.ManyToManyField(Amenity, verbose_name='comodidades')
+	networks = models.ManyToManyField(Network, through='LocalNetwork', blank=True, verbose_name='redes sociales')
+	amenities = models.ManyToManyField(Amenity, blank=True, verbose_name='comodidades')
 
 	def __str__(self):
-		return unicode(self.name)
+		return self.name
 
 class LocalNetwork(models.Model):
 	class Meta:

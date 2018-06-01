@@ -4,7 +4,7 @@ from .models import Place, Local
 class LocalForm(ModelForm):
     class Meta:
         model = Local
-        exclude = ('user',)
-        #widgets = {
-        #	'services':CheckboxSelectMultiple,
-        #}
+        exclude = ('user', 'tags', 'networks')
+        widgets = {
+        	'amenities':CheckboxSelectMultiple,
+        }
