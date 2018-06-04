@@ -35,7 +35,7 @@ class Place(models.Model):
 		return self.name
 
 
-class Network(models.Model):
+class Social(models.Model):
 	class Meta:
 		verbose_name = 'red social'
 		verbose_name_plural = 'redes sociales' 
@@ -66,19 +66,19 @@ class Local(Place):
 	phone = models.CharField(max_length=16, blank=True, null=True, verbose_name='teléfono')
 	mail = models.EmailField(blank=True, null=True, verbose_name='correo electrónico')
 	webpage = models.URLField(blank=True, null=True, verbose_name='página web')	
-	networks = models.ManyToManyField(Network, through='LocalNetwork', blank=True, verbose_name='redes sociales')
+	socials = models.ManyToManyField(Social, through='LocalSocial', blank=True, verbose_name='redes sociales')
 	amenities = models.ManyToManyField(Amenity, blank=True, verbose_name='comodidades')
 
 	def __str__(self):
 		return self.name
 
-class LocalNetwork(models.Model):
+class LocalSocial(models.Model):
 	class Meta:
 		verbose_name = 'red social'
 		verbose_name_plural = 'redes sociales'
 
 	local = models.ForeignKey(Local, on_delete=models.CASCADE)
-	network = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name='red social')
+	social = models.ForeignKey(Social, on_delete=models.CASCADE, verbose_name='red social')
 	url = models.URLField(verbose_name='dirección url')
 
 class LocalImage(models.Model):

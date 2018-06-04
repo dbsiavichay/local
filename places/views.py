@@ -14,7 +14,7 @@ class LocalCreateView(CreateView):
 	form_class = LocalForm
 	success_url = reverse_lazy('home')
 
-	def form_valid(self, form):		
+	def form_valid(self, form):
 		self.object = form.save(commit=False)
 		self.object.user = self.request.user
 		self.object.save()
