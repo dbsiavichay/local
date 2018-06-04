@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.forms import inlineformset_factory
 from django.views.generic import ListView, CreateView
 
-from .models import Place, Local
-from .forms import LocalForm
+from .models import Place, Local, Social, LocalSocial
+from .forms import LocalForm, LocalSocialForm
 
 
 class PlaceListView(ListView):
@@ -14,10 +15,37 @@ class LocalCreateView(CreateView):
 	form_class = LocalForm
 	success_url = reverse_lazy('home')
 
+	def get_context_data(self, **kwargs):
+		context = super(LocalCreateView, self).get_context_data(**kwargs)
+		context['localsocial_formset'] = self.get_localsocial_formset()
+
+		return context
+
+	def get_localsocial_formset(self):
+		post_data = self.request.POST if self.request.method == 'POST' else None
+		socials = [s for s in Social.objects.all()]
+
+		Formset = inlineformset_factory(
+			Local, LocalSocial, 		
+			form = LocalSocialForm,
+			extra= len(socials),
+		)
+		
+		formset = Formset(post_data, form_kwargs={'socials':socials})
+		return formset
+
 	def form_valid(self, form):
-		self.object = form.save(commit=False)
-		self.object.user = self.request.user
-		self.object.save()
-		form.save_m2m()
+		localsocial_formset = self.get_localsocial_formset()
+
+		if localsocial_formset.is_valid():
+			self.object = form.save(commit=False)
+			self.object.user = self.request.user
+			self.object.save()
+			form.save_m2m()
+
+			localsocial_formset.instance = self.object
+			localsocial_formset.save()
 	
-		return redirect(self.success_url)
+			return redirect(self.success_url)
+		else:
+			return self.form_invalid(form)

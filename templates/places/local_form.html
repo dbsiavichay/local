@@ -59,8 +59,8 @@
                                         {% ui_input form.category %}
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Keywords <i class="fa fa-key"></i></label>
-                                        <input type="text" placeholder="Maximum 15, should be separated by commas" value=""/>
+                                        <label>Tags <i class="fa fa-key"></i></label>
+                                        <input type="text" value=""/>
                                     </div>
                                 </div>
 
@@ -117,13 +117,13 @@
                                 <h4>Redes Sociales</h4>
                             </div>
                             <div class="custom-form">
-                                {% for network in form.networks.field.queryset %}                            
-                                <label>{{ network.name }} <i class="fa fa-{{ network.icon }}"></i></label>
-                                <input type="url" placeholder="{{ network.url }}" value=""/>
-                                {% endfor %}
+                                {{ localsocial_formset.management_form }}
 
-
-                                
+                                {% for form in localsocial_formset %}
+                                <label>{{ form.social.initial }} <i class="fa fa-{{ form.social.initial.icon }}"></i></label>
+                                {{ form.social }}
+                                {{ form.url }}
+                                {% endfor %}                                
                                 <button type="submit" class="btn big-btn  color-bg flat-btn">Guardar
                                     <i class="fa fa-angle-right"></i>
                                 </button>
