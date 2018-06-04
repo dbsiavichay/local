@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.forms import inlineformset_factory
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from .models import Place, Local, Social, LocalSocial
 from .forms import LocalForm, LocalSocialForm
@@ -49,3 +49,6 @@ class LocalCreateView(CreateView):
 			return redirect(self.success_url)
 		else:
 			return self.form_invalid(form)
+
+class LocalDetailView(DetailView):
+	model = Local
