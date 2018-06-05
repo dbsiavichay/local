@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <div class="list-single-header-contacts fl-wrap">
                             <ul>
-                                <li><i class="fa fa-phone"></i><a  href="#">+7(111)123456789</a></li>
+                                <li><i class="fa fa-phone"></i><a href="#">+7(111)123456789</a></li>
                                 <li><i class="fa fa-map-marker"></i><a  href="#">USA 27TH Brooklyn NY</a></li>
                                 <li><i class="fa fa-envelope-o"></i><a  href="#">yourmail@domain.com</a></li>
                             </ul>
@@ -84,18 +84,13 @@
                         <a href="#" class="btn transparent-btn float-btn">Download menu <i class="fa fa-file-pdf-o"></i></a>
                         <span class="fw-separator"></span>
                         <div class="list-single-main-item-title fl-wrap">
-                            <h3>Amenities</h3>
+                            <h3>Comodidades</h3>
                         </div>
                         <div class="listing-features fl-wrap">
                             <ul>
-                                <li><i class="fa fa-rocket"></i> Elevator in building</li>
-                                <li><i class="fa fa-wifi"></i> Free Wi Fi</li>
-                                <li><i class="fa fa-motorcycle"></i> Free Parking</li>
-                                <li><i class="fa fa-cloud"></i> Air Conditioned</li>
-                                <li><i class="fa fa-shopping-cart"></i> Online Ordering</li>
-                                <li><i class="fa fa-paw"></i> Pet Friendly</li>
-                                <li><i class="fa fa-tree"></i> Outdoor Seating</li>
-                                <li><i class="fa fa-wheelchair"></i> Wheelchair Friendly</li>
+                                {% for amenity in object.amenities.all %}
+                                <li><i class="fa fa-{{ amenity.icon }}"></i> {{ amenity.name }}</li>
+                                {% endfor %}                                
                             </ul>
                         </div>
                         <span class="fw-separator"></span>
@@ -338,88 +333,48 @@
                     <!--box-widget-item -->
                     <div class="box-widget-item fl-wrap">
                         <div class="box-widget-item-header">
-                            <h3>Working Hours : </h3>
+                            <h3>Horario de atención : </h3>
                         </div>
                         <div class="box-widget opening-hours">
                             <div class="box-widget-content">
-                                <span class="current-status"><i class="fa fa-clock-o"></i> Now Open</span>
+                                <span class="current-status"><i class="fa fa-clock-o"></i> Abierto</span>
                                 <ul>
-                                    <li><span class="opening-hours-day">Monday </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Tuesday </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Wednesday </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Thursday </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Friday </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Saturday </span><span class="opening-hours-time">9 AM - 3 PM</span></li>
-                                    <li><span class="opening-hours-day">Sunday </span><span class="opening-hours-time">Closed</span></li>
+                                    <li><span class="opening-hours-day">Lunes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
+                                    <li><span class="opening-hours-day">Martes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
+                                    <li><span class="opening-hours-day">Miercoles </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
+                                    <li><span class="opening-hours-day">Jueves </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
+                                    <li><span class="opening-hours-day">Viernes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
+                                    <li><span class="opening-hours-day">Sábado </span><span class="opening-hours-time">9 AM - 3 PM</span></li>
+                                    <li><span class="opening-hours-day">Domingo </span><span class="opening-hours-time">Cerrado</span></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <!--box-widget-item end -->  
+                                                         
                     <!--box-widget-item -->
                     <div class="box-widget-item fl-wrap">
                         <div class="box-widget-item-header">
-                            <h3>Book a Table Online : </h3>
-                        </div>
-                        <div class="box-widget opening-hours">
-                            <div class="box-widget-content">
-                                <form   class="add-comment custom-form">
-                                    <fieldset>
-                                        <label><i class="fa fa-user-o"></i></label>
-                                        <input type="text" placeholder="Your Name *" value=""/>
-                                        <div class="clearfix"></div>
-                                        <label><i class="fa fa-envelope-o"></i>  </label>
-                                        <input type="text" placeholder="Email Address*" value=""/>
-                                        <div class="quantity fl-wrap">
-                                            <span><i class="fa fa-user-plus"></i>Persons : </span>
-                                            <div class="quantity-item">
-                                                <input type="button" value="-" class="minus">
-                                                <input type="text"    name="quantity" value="1" title="Qty" class="qty" size="4">
-                                                <input type="button" value="+" class="plus">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">                               
-                                                <label><i class="fa fa-calendar-check-o"></i>  </label>
-                                                <input type="text" placeholder="Date" class="datepicker"   data-large-mode="true" data-large-default="true" value=""/>
-                                            </div>
-                                            <div class="col-md-6"> 
-                                                <label><i class="fa fa-clock-o"></i>  </label>
-                                                <input type="text" placeholder="Time" class="timepicker" value="12:00 am"/>
-                                            </div>
-                                        </div>
-                                        <textarea cols="40" rows="3" placeholder="Additional Information:"></textarea>
-                                    </fieldset>
-                                    <button class="btn  big-btn  color-bg flat-btn">Book Now<i class="fa fa-angle-right"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!--box-widget-item end -->                                      
-                    <!--box-widget-item -->
-                    <div class="box-widget-item fl-wrap">
-                        <div class="box-widget-item-header">
-                            <h3>Location / Contacts : </h3>
+                            <h3>Localización / Contactos : </h3>
                         </div>
                         <div class="box-widget">
                             <div class="map-container">
-                                <div id="singleMap" data-latitude="40.7427837" data-longitude="-73.11445617675781" data-mapTitle="Out Location"></div>
+                                <div id="singleMap" data-latitude="-2.3123517508430775" data-longitude="-78.1206749300552" data-mapTitle="Out Location"></div>
                             </div>
                             <div class="box-widget-content">
                                 <div class="list-author-widget-contacts list-item-widget-contacts">
                                     <ul>
-                                        <li><span><i class="fa fa-map-marker"></i> Adress :</span> <a href="#">USA 27TH Brooklyn NY</a></li>
-                                        <li><span><i class="fa fa-phone"></i> Phone :</span> <a href="#">+7(123)987654</a></li>
-                                        <li><span><i class="fa fa-envelope-o"></i> Mail :</span> <a href="#">AlisaNoory@domain.com</a></li>
-                                        <li><span><i class="fa fa-globe"></i> Website :</span> <a href="#">themeforest.net</a></li>
+                                        <li><span><i class="fa fa-map-marker"></i> Dirección :</span> <a href="#">{{ object.address }}</a></li>
+                                        <li><span><i class="fa fa-phone"></i> Telefono :</span> <a href="#">{{ object.phone }}</a></li>
+                                        <li><span><i class="fa fa-envelope-o"></i> Correo :</span> <a href="#">{{ object.mail }}</a></li>
+                                        <li><span><i class="fa fa-globe"></i> Página web :</span> <a href="#">{{ object.webpage }}</a></li>
                                     </ul>
                                 </div>
                                 <div class="list-widget-social">
                                     <ul>
-                                        <li><a href="#" target="_blank" ><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#" target="_blank" ><i class="fa fa-vk"></i></a></li>
-                                        <li><a href="#" target="_blank" ><i class="fa fa-whatsapp"></i></a></li>
+                                        {% for social in object.localsocial_set.all %}
+                                        <li><a href="{{ social.url }}" target="_blank" ><i class="fa fa-{{ social.social.icon }}"></i></a></li>
+                                        {% endfor %}                                        
                                     </ul>
                                 </div>
                             </div>
@@ -429,11 +384,11 @@
                     <!--box-widget-item -->
                     <div class="box-widget-item fl-wrap">
                         <div class="box-widget-item-header">
-                            <h3>Hosted by : </h3>
+                            <h3>Publicado por : </h3>
                         </div>
                         <div class="box-widget list-author-widget">
                             <div class="list-author-widget-header shapes-bg-small  color-bg fl-wrap">
-                                <span class="list-author-widget-link"><a href="author-single.html">Alisa Noory</a></span>
+                                <span class="list-author-widget-link"><a href="author-single.html">{{ object.user.get_full_name }}</a></span>
                                 <img src="{% static 'images/avatar/1.jpg' %}" alt=""> 
                             </div>
                             <div class="box-widget-content">
@@ -512,6 +467,9 @@
     </div>
 </section>
 <!--  section  end-->
+{% endblock %}
+{% block extrajs %}
+    {% include 'base/js_maps.html' %}
 {% endblock %}
 
 

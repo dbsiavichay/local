@@ -46,7 +46,7 @@ class LocalCreateView(CreateView):
 			localsocial_formset.instance = self.object
 			localsocial_formset.save()
 	
-			return redirect(self.success_url)
+			return redirect(reverse_lazy('detail_local', args=[self.object.id]))
 		else:
 			return self.form_invalid(form)
 

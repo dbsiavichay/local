@@ -133,7 +133,10 @@
 
 	var a=document.getElementById("singleMap");
 	void 0!==a&&null!=a&&google.maps.event.addDomListener(window,"load",function() {
-		var o={lng:e("#singleMap").data("longitude"),lat:e("#singleMap").data("latitude")},
+		var o={
+			lng:e("#singleMap").data("longitude"),
+			lat:e("#singleMap").data("latitude")
+		},
 		a=new google.maps.Map(document.getElementById("singleMap"),{
 			zoom:14,
 			center:o,
