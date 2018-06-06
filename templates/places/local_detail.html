@@ -15,7 +15,7 @@
                 <div class="list-single-header-item-opt fl-wrap">
                     <div class="list-single-header-cat fl-wrap">
                         <a href="#">{{ object.category }}</a>
-                        <span>  Now Opening <i class="fa fa-check"></i></span>
+                        <span>  Ahora abierto <i class="fa fa-check"></i></span>
                     </div>
                 </div>
                 <h2>{{ object.name }} <span> - Publicado por </span><a href="author-single.html">{{ object.user.get_full_name }}</a></h2>
@@ -30,8 +30,8 @@
                         <div class="list-single-header-contacts fl-wrap">
                             <ul>
                                 <li><i class="fa fa-phone"></i><a href="#">+7(111)123456789</a></li>
-                                <li><i class="fa fa-map-marker"></i><a  href="#">USA 27TH Brooklyn NY</a></li>
-                                <li><i class="fa fa-envelope-o"></i><a  href="#">yourmail@domain.com</a></li>
+                                <li><i class="fa fa-map-marker"></i><a href="#">{{ object.address }}</a></li>
+                                <li><i class="fa fa-envelope-o"></i><a href="#">yourmail@domain.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -359,7 +359,7 @@
                         </div>
                         <div class="box-widget">
                             <div class="map-container">
-                                <div id="singleMap" data-latitude="-2.3123517508430775" data-longitude="-78.1206749300552" data-mapTitle="Out Location"></div>
+                                <div id="singleMap" data-longitude="{{ object.geopoint.x }}"  data-latitude="{{ object.geopoint.y }}" data-mapTitle="Out Location"></div>
                             </div>
                             <div class="box-widget-content">
                                 <div class="list-author-widget-contacts list-item-widget-contacts">

@@ -46,6 +46,9 @@
                 <div class="col-md-9">
                     <form action="" method="POST" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
+
+                        {{ form.errors }}
+                        {{ localsocial_formset.errors }}
                         <!-- profile-edit-container--> 
                         <div class="profile-edit-container add-list-container">
                             <div class="profile-edit-header fl-wrap">
@@ -75,18 +78,16 @@
                                 <h4>Localización /  Contactos</h4>
                             </div>
                             <div class="custom-form">
-                                {% ui_input form.address 'map-marker' %}
+                                {% ui_input form.address 'map-marker' %}                                
 
                                 <div id="inputMap"></div>
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Latitud <i class="fa fa-globe"></i></label>
-                                        <input type="text" id="id_latitude"/>
+                                        {% ui_input form.longitude 'globe' %}                                        
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Longitud <i class="fa fa-globe"></i></label>
-                                        <input type="text" id="id_longitude"/>
+                                        {% ui_input form.latitude 'globe' %}
                                     </div>
                                 </div>
                                 {% ui_input form.phone 'phone' %}
@@ -118,13 +119,15 @@
                             <div class="profile-edit-header fl-wrap" style="margin-top:30px">
                                 <h4>Redes Sociales</h4>
                             </div>
-                            <div class="custom-form">
+                            <div class="custom-form">                                
                                 {{ localsocial_formset.management_form }}
 
-                                {% for form in localsocial_formset %}
-                                <label>{{ form.social.initial }} <i class="fa fa-{{ form.social.initial.icon }}"></i></label>
-                                {{ form.social }}
-                                {{ form.url }}
+                                {% for form in localsocial_formset %}                                    
+                                    <label>{{ form.social.initial }} 
+                                        <i class="fa fa-{{ form.social.initial.icon }}"></i>
+                                    </label>
+                                    {{ form.social }}
+                                    {{ form.url }}
                                 {% endfor %}                                
                                 <button type="submit" class="btn big-btn  color-bg flat-btn">Guardar
                                     <i class="fa fa-angle-right"></i>

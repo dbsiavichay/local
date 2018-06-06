@@ -1,31 +1,45 @@
-if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        setMap(position.coords.latitude, position.coords.longitude);
-    });
-} else {
-    setMap(-2.2874005, -78.11685009999997)
+function getPosition() {
+    var lon = $('#id_longitude').val();
+    var lat = $('#id_latitude').val();
+
+    if (lon && lat) setMap(lon, lat)
+    else {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                setMap(position.coords.latitude, position.coords.longitude);
+            });
+        } else {
+            setMap(-78.11685009999997, -2.2874005)
+        }        
+    }
 }
 
 
-function setMap(lat, lon) {
-    $('#inputMap').locationpicker({
+$('#id_address, #id_latitude, #id_longitude').keydown(function (e) {
+    if (e.keyCode == 13) e.preventDefault();
+});
+
+function setMap(lon, lat) {
+    var l = $('#inputMap').locationpicker({
         location: {
+            longitude: lon,
             latitude: lat,
-            longitude: lon
         },
         enableAutocomplete: true,
         enableReverseGeocode: true,
         radius: 0,
         inputBinding: {
-            latitudeInput: $('#id_latitude'),
             longitudeInput: $('#id_longitude'),        
+            latitudeInput: $('#id_latitude'),
             locationNameInput: $('#id_address')
         },
         onchanged: function (currentLocation, radius, isMarkerDropped) {
-            var addressComponents = $(this).locationpicker('map').location.addressComponents;
+            var addressComponents = $(this).locationpicker('map').location.addressComponents;            
             //console.log(currentLocation);  //latlon  
             //console.log(addressComponents);
             //updateControls(addressComponents); //Data
         }
-    });    
+    });
 }
+
+getPosition();

@@ -17,7 +17,6 @@ class SocialAdmin(admin.ModelAdmin):
 class AmenityAdmin(admin.ModelAdmin):
 	pass
 
-
 class LocalSocialInline(admin.TabularInline):
 	model = LocalSocial
 

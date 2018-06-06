@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 class Tag(models.Model):
 	name = models.CharField(max_length=16)
@@ -24,7 +24,8 @@ class Place(models.Model):
 
 	name = models.CharField(max_length=45, verbose_name='nombre')
 	description = models.TextField(blank=True, null=True, verbose_name='descripción')
-	address = models.CharField(max_length=128, verbose_name='dirección')	
+	address = models.CharField(max_length=128, verbose_name='dirección')
+	geopoint = models.PointField(blank=True, null=True, verbose_name="geo posición")
 	verified = models.BooleanField(default=False, verbose_name='verificado')		
 	pub_date = models.DateTimeField(auto_now_add=True)		
 	user = models.ForeignKey('auth.User', on_delete=models.CASCADE, verbose_name='publicado por')	
