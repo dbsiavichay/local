@@ -122,10 +122,17 @@
                             <div class="custom-form">                                
                                 {{ localsocial_formset.management_form }}
 
-                                {% for form in localsocial_formset %}                                    
+                                {% for form in localsocial_formset %}
+                                    {{ form.id }}
+                                    {% if form.instance.pk is None%}                                    
                                     <label>{{ form.social.initial }} 
                                         <i class="fa fa-{{ form.social.initial.icon }}"></i>
                                     </label>
+                                    {% else %}
+                                    <label>{{ form.instance.social }} 
+                                        <i class="fa fa-{{ form.instance.social.icon }}"></i>
+                                    </label>
+                                    {% endif %}
                                     {{ form.social }}
                                     {{ form.url }}
                                 {% endfor %}                                

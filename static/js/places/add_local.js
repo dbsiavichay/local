@@ -2,11 +2,14 @@ function getPosition() {
     var lon = $('#id_longitude').val();
     var lat = $('#id_latitude').val();
 
+    console.log(lon);
+    console.log(lat);
+
     if (lon && lat) setMap(lon, lat)
     else {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                setMap(position.coords.latitude, position.coords.longitude);
+                setMap(position.coords.longitude, position.coords.latitude);
             });
         } else {
             setMap(-78.11685009999997, -2.2874005)
@@ -20,10 +23,12 @@ $('#id_address, #id_latitude, #id_longitude').keydown(function (e) {
 });
 
 function setMap(lon, lat) {
+    console.log(lon);
+    console.log(lat);
     var l = $('#inputMap').locationpicker({
         location: {
-            longitude: lon,
             latitude: lat,
+            longitude: lon,
         },
         enableAutocomplete: true,
         enableReverseGeocode: true,

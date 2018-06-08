@@ -56,7 +56,7 @@ class LocalUpdateView(UpdateView):
 	success_url = reverse_lazy('places')
 
 	def get_context_data(self, **kwargs):
-		context = super(LocalUpdateView, self).get_context_data(**kwargs)
+		context = super().get_context_data(**kwargs)
 		context['localsocial_formset'] = self.get_localsocial_formset()
 
 		return context
@@ -68,7 +68,7 @@ class LocalUpdateView(UpdateView):
 		Formset = inlineformset_factory(
 			Local, LocalSocial, 		
 			form = LocalSocialForm,
-			extra= 0,
+			extra= len(socials) - self.object.socials.count(),
 		)
 		
 		formset = Formset(post_data, instance=self.object, form_kwargs={'socials':socials})
@@ -77,10 +77,9 @@ class LocalUpdateView(UpdateView):
 	def form_valid(self, form):
 		localsocial_formset = self.get_localsocial_formset()
 
+		print(localsocial_formset.is_valid())
 		if localsocial_formset.is_valid():
-			form.save(commit=False)			
-			form.save_m2m()
-			
+			form.save()			
 			localsocial_formset.save()
 	
 			return redirect(reverse_lazy('detail_local', args=[self.object.id]))
