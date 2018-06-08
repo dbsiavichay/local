@@ -39,7 +39,7 @@ class Place(models.Model):
 class Social(models.Model):
 	class Meta:
 		verbose_name = 'red social'
-		verbose_name_plural = 'redes sociales' 
+		verbose_name_plural = 'redes sociales' 		
 
 	name = models.CharField(max_length=64, verbose_name='nombre')
 	icon = models.CharField(max_length=32, verbose_name='icono')
@@ -76,7 +76,7 @@ class Local(Place):
 class LocalSocial(models.Model):
 	class Meta:
 		verbose_name = 'red social'
-		verbose_name_plural = 'redes sociales'
+		verbose_name_plural = 'redes sociales'		
 
 	local = models.ForeignKey(Local, on_delete=models.CASCADE)
 	social = models.ForeignKey(Social, on_delete=models.CASCADE, verbose_name='red social')

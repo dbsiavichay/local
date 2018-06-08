@@ -33,6 +33,17 @@ class LocalForm(PlaceForm):
         	'amenities':CheckboxSelectMultiple,
         }
 
+class LocalSocialFormset(BaseInlineFormSet):
+	def clean(self):		
+		for form in self.forms:
+			cleaned_data = form.clean()						
+			id = cleaned_data.get('id', None)
+			url = cleaned_data.get('url', None)
+			if id and not url:
+				cleaned_data['DELETE'] = True
+			
+		super().clean()			
+		
 class LocalSocialForm(ModelForm):
 	class Meta:
 		model = LocalSocial
@@ -42,10 +53,8 @@ class LocalSocialForm(ModelForm):
 		}
 
 	def __init__(self, *args, **kwargs):
-		socials = kwargs.pop('socials', None)						
-
+		socials = kwargs.pop('socials', None)		
 		super().__init__(*args, **kwargs)
-
 		if socials is None:
 			return
 

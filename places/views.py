@@ -4,7 +4,7 @@ from django.forms import inlineformset_factory
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from .models import Place, Local, Social, LocalSocial
-from .forms import LocalForm, LocalSocialForm
+from .forms import LocalForm, LocalSocialForm, LocalSocialFormset
 
 
 class PlaceListView(ListView):
@@ -68,6 +68,7 @@ class LocalUpdateView(UpdateView):
 		Formset = inlineformset_factory(
 			Local, LocalSocial, 		
 			form = LocalSocialForm,
+			formset = LocalSocialFormset,
 			extra= len(socials) - self.object.socials.count(),
 		)
 		
@@ -80,7 +81,6 @@ class LocalUpdateView(UpdateView):
 		if localsocial_formset.is_valid():
 			form.save()			
 			localsocial_formset.save()
-	
 			return redirect(reverse_lazy('detail_local', args=[self.object.id]))
 		else:
 			return self.form_invalid(form)
