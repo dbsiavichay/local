@@ -2,9 +2,6 @@ function getPosition() {
     var lon = $('#id_longitude').val();
     var lat = $('#id_latitude').val();
 
-    console.log(lon);
-    console.log(lat);
-
     if (lon && lat) setMap(lon, lat)
     else {
         if ("geolocation" in navigator) {
@@ -22,9 +19,7 @@ $('#id_address, #id_latitude, #id_longitude').keydown(function (e) {
     if (e.keyCode == 13) e.preventDefault();
 });
 
-function setMap(lon, lat) {
-    console.log(lon);
-    console.log(lat);
+function setMap(lon, lat) {    
     var l = $('#inputMap').locationpicker({
         location: {
             latitude: lat,

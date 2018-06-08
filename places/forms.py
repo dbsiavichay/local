@@ -33,7 +33,6 @@ class LocalForm(PlaceForm):
         	'amenities':CheckboxSelectMultiple,
         }
 
-
 class LocalSocialForm(ModelForm):
 	class Meta:
 		model = LocalSocial
@@ -43,10 +42,20 @@ class LocalSocialForm(ModelForm):
 		}
 
 	def __init__(self, *args, **kwargs):
-		socials = kwargs.pop('socials', None)				
-		social = socials.pop(0) if socials is not None else None
+		socials = kwargs.pop('socials', None)						
+
 		super().__init__(*args, **kwargs)
-		if self.instance.pk is None and social is not None:
+
+		if socials is None:
+			return
+
+		if self.instance.pk is not None:
+			for i in range(len(socials)):
+				if socials[i].pk == self.instance.social.pk:
+					socials.pop(i)
+					break;
+		else:
+			social = socials.pop(0)
 			self.fields['social'].initial = social
 			self.fields['url'].widget.attrs.update({'placeholder': social.url})
 	

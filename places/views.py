@@ -76,8 +76,7 @@ class LocalUpdateView(UpdateView):
 
 	def form_valid(self, form):
 		localsocial_formset = self.get_localsocial_formset()
-
-		print(localsocial_formset.is_valid())
+		
 		if localsocial_formset.is_valid():
 			form.save()			
 			localsocial_formset.save()
