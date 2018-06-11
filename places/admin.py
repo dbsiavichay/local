@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Category, Tag, Place, Social, Amenity,
-		Local, LocalSocial, LocalImage, LocalSchedule)
+		Local, LocalSocial, PlaceImage, LocalSchedule)
 
 class CategoryAdmin(admin.ModelAdmin):
 	pass
@@ -20,8 +20,8 @@ class AmenityAdmin(admin.ModelAdmin):
 class LocalSocialInline(admin.TabularInline):
 	model = LocalSocial
 
-class LocalImageInline(admin.TabularInline):
-	model = LocalImage
+class PlaceImageInline(admin.TabularInline):
+	model = PlaceImage
 
 class LocalScheduleInline(admin.TabularInline):
 	model = LocalSchedule
@@ -29,7 +29,7 @@ class LocalScheduleInline(admin.TabularInline):
 class LocalAdmin(admin.ModelAdmin):
 	inlines = [
 		LocalSocialInline,
-		LocalImageInline,
+		PlaceImageInline,
 		LocalScheduleInline,
 	]
 

@@ -9,7 +9,8 @@
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
 
-        {% include 'base/css_imports.html' %}        
+        {% include 'base/css_imports.html' %}
+        {% block extracss %}{% endblock %}        
     </head>
     <body>
         {% include 'base/loader.html' %}

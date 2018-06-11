@@ -35,6 +35,14 @@ class Place(models.Model):
 	def __str__(self):
 		return self.name
 
+class PlaceImage(models.Model):
+	class Meta:
+		verbose_name = 'imagen'
+		verbose_name_plural = 'imagenes'
+
+	image = models.ImageField(upload_to='place_image', verbose_name='imagen')
+	is_cover = models.BooleanField(default=False, verbose_name='de portada?')
+	place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='images')
 
 class Social(models.Model):
 	class Meta:
@@ -82,14 +90,6 @@ class LocalSocial(models.Model):
 	social = models.ForeignKey(Social, on_delete=models.CASCADE, verbose_name='red social')
 	url = models.URLField(verbose_name='dirección url')
 
-class LocalImage(models.Model):
-	class Meta:
-		verbose_name = 'imagen'
-		verbose_name_plural = 'imagenes'
-
-	image = models.ImageField(upload_to='locals', verbose_name='imagen')
-	is_cover = models.BooleanField(default=False, verbose_name='de portada?')
-	local = models.ForeignKey(Local, on_delete=models.CASCADE)
 
 class LocalSchedule(models.Model):
 	class Meta:

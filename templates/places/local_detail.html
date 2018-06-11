@@ -3,10 +3,21 @@
 {% load static %}
 {% load ui_components %}
 
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/cropper/cropper.css' %}">
+{% endblock %}
+
 {% block 'content' %}
 <!--  section  --> 
 <section class="parallax-section single-par list-single-section" data-scrollax-parent="true" id="sec1">
-    <div class="bg par-elem "  data-bg="{% static 'images/bg/1.jpg'" data-scrollax="properties: { translateY: '30%' }"></div>
+
+    <label class="cover-overlay">
+        <i class="fa fa-image"></i>
+        <div>Cambiar foto de portada</div>
+        <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+    </label>
+    
+    <div class="bg par-elem" data-bg="{% static 'images/bg/2.jpg' %}" data-scrollax="properties: { translateY: '30%' }"></div>
     <div class="overlay"></div>
     <div class="bubble-bg"></div>
     <div class="list-single-header absolute-header fl-wrap">
@@ -467,9 +478,106 @@
     </div>
 </section>
 <!--  section  end-->
+<img id="foto" src="https://avatars0.githubusercontent.com/u/3456749">
+{% include 'places/crop_cover_modal.html' %}
 {% endblock %}
 {% block extrajs %}
     {% include 'base/js_maps.html' %}
+    <script type="text/javascript" src="{% static 'plugins/cropper/cropper.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/csfrtoken.js' %}"></script>
+    <script>
+
+    $(function () {
+        var image = document.getElementById('image');
+        var input = document.getElementById('input');
+          
+         var $modal = $('#cover-modal');
+         var cropper;   
+
+        input.addEventListener('change', function (e) {
+            var files = e.target.files;
+            var done = function (url) {
+                input.value = '';
+                image.src = url;          
+                modalShow();
+            };
+            var reader;
+            var file;
+            var url;
+
+            if (files && files.length > 0) {
+                file = files[0];
+
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+
+        var modalShow =  function () {
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 5,
+                autoCropArea:1,
+                viewMode: 3,
+                cropBoxResizable: false,
+            });
+
+            $modal.fadeIn();
+        }
+
+
+        $('#crop').on('click', function () {
+           
+            var canvas;
+            $modal.fadeOut();            
+
+            if (cropper) {
+                canvas = cropper.getCroppedCanvas();                
+                                      
+                canvas.toBlob(function (blob) {
+                    var formData = new FormData();
+                    var place = '{{ object.id }}';
+
+                    formData.append('image', blob);
+                    formData.append('place', place);
+                    formData.append('is_cover', true);
+
+                    $.ajax("{% url 'add_place_image' %}", {
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,                      
+
+                        success: function () {
+                            console.log('asd');
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                    });
+                });
+
+                cropper.destroy();
+                cropper = null;
+            }
+            
+        });
+
+
+       
+
+
+
+    });
+    
+  </script>
 {% endblock %}
 
 

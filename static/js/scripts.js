@@ -464,19 +464,19 @@ function initCitybook() {
             "left": dpl + "%",
         });
     });
-    // modal ------------------
-    var modal = {};
-    modal.hide = function () {
-        $('.modal').fadeOut();
-        $("html, body").removeClass("hid-body");
-    };
+    // modal ------------------    
     $('.modal-open').on("click", function (e) {
         e.preventDefault();
-        $('.modal').fadeIn();
-        $("html, body").addClass("hid-body");
+        var target = $(this).attr('target');        
+        if(target) {
+            $(target).fadeIn();
+            $("html, body").addClass("hid-body");            
+        }
     });
     $('.close-reg').on("click", function () {
-        modal.hide();
+        var modal = $(this).parents('.modal');
+        modal.fadeOut();
+        $("html, body").removeClass("hid-body");
     });
 	// click ------------------
     $(".more-filter-option").on("click", function () {

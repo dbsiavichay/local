@@ -3,12 +3,41 @@ from django.urls import reverse_lazy
 from django.forms import inlineformset_factory
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
-from .models import Place, Local, Social, LocalSocial
+from .models import Place, PlaceImage ,Local, Social, LocalSocial
 from .forms import LocalForm, LocalSocialForm, LocalSocialFormset
 
 
 class PlaceListView(ListView):
 	model = Place
+
+class PlaceImageCreateView(CreateView):
+	model = PlaceImage
+	fields = '__all__'
+	template_name = 'places/local_detail.html'
+	success_url = reverse_lazy('places')
+
+	def form_valid(self, form):
+		print(form.cleaned_data)
+		# place = form.cleaned_data['place'];
+		# images = place.images.filter(is_cover=True);
+
+		# if len(images) > 0:
+		# 	place_image = images[0];
+		# 	place_image.image = form.cleaned_data['image']
+		# 	place_image.save()
+		# else:
+		# 	self.object = form.save();
+		# 	self.object.place
+
+		# redirect(reverse_lazy('places'))
+
+	def post(self, request, *args, **kwargs):	    
+		form = self.get_form()
+		if form.is_valid():
+			return self.form_valid(form)
+		else:
+			print(form.errors)
+			return self.form_invalid(form)
 
 class LocalCreateView(CreateView):
 	model = Local
@@ -87,3 +116,8 @@ class LocalUpdateView(UpdateView):
 
 class LocalDetailView(DetailView):
 	model = Local
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		return context

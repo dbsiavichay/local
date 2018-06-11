@@ -1,0 +1,21 @@
+.cover-overlay {
+	position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: #fff;
+    z-index: 5;
+    height: 150px;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-top: 30px;
+}
+
+.cover-overlay > .fa {
+	font-size: 3em;
+}
+
+.cover-overlay:hover {
+    color: #4DB7FE;
+    cursor: pointer;
+}
