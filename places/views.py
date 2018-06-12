@@ -4,7 +4,9 @@ from django.forms import inlineformset_factory
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from .models import Place, PlaceImage ,Local, Social, LocalSocial
-from .forms import LocalForm, LocalSocialForm, LocalSocialFormset
+from .forms import PlaceImageForm ,LocalForm, LocalSocialForm, LocalSocialFormset
+
+from .utils import base64_to_image
 
 
 class PlaceListView(ListView):
@@ -12,32 +14,31 @@ class PlaceListView(ListView):
 
 class PlaceImageCreateView(CreateView):
 	model = PlaceImage
-	fields = '__all__'
-	template_name = 'places/local_detail.html'
-	success_url = reverse_lazy('places')
+	form_class = PlaceImageForm	
 
-	def form_valid(self, form):
-		print(form.cleaned_data)
-		# place = form.cleaned_data['place'];
-		# images = place.images.filter(is_cover=True);
+	def form_valid(self, form):		
+		place = form.cleaned_data['place']
 
-		# if len(images) > 0:
-		# 	place_image = images[0];
-		# 	place_image.image = form.cleaned_data['image']
-		# 	place_image.save()
-		# else:
-		# 	self.object = form.save();
-		# 	self.object.place
+		#Solo el propietario puede cambiar la foto de portada
+		if place.user != self.request.user:
+			return redirect(reverse_lazy('detail_local', args=[place.id]))
+		####
+		
+		cover_image = place.get_cover_image()
 
-		# redirect(reverse_lazy('places'))
-
-	def post(self, request, *args, **kwargs):	    
-		form = self.get_form()
-		if form.is_valid():
-			return self.form_valid(form)
+		if cover_image is not None:
+			data, ext = base64_to_image(form.cleaned_data['image'])
+			file_name = '%s.%s' % (form.cleaned_data['image_name'], ext)
+			cover_image.delete()
+			cover_image.save(file_name, data, save=True)
 		else:
-			print(form.errors)
-			return self.form_invalid(form)
+			self.object = form.save();
+			self.object.place
+
+		return redirect(reverse_lazy('detail_local', args=[place.id]))
+
+	def get(self, request, *args, **kwargs):
+		return redirect('places')
 
 class LocalCreateView(CreateView):
 	model = Local
@@ -119,5 +120,10 @@ class LocalDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+
+		cover_form = PlaceImageForm()
+		cover_form.fields['place'].initial = self.object
+
+		context.update({'cover_form': cover_form})
 
 		return context

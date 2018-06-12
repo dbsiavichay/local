@@ -35,6 +35,14 @@ class Place(models.Model):
 	def __str__(self):
 		return self.name
 
+	def get_cover_image(self):
+		place_images = self.images.filter(is_cover=True)
+
+		if len(place_images) > 0 and place_images[0].image:
+			return place_images[0].image
+		else:
+			return None
+
 class PlaceImage(models.Model):
 	class Meta:
 		verbose_name = 'imagen'

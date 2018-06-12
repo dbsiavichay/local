@@ -16,8 +16,9 @@
         <div>Cambiar foto de portada</div>
         <input type="file" class="sr-only" id="input" name="image" accept="image/*">
     </label>
-    
-    <div class="bg par-elem" data-bg="{% static 'images/bg/2.jpg' %}" data-scrollax="properties: { translateY: '30%' }"></div>
+    {% with cover_image=object.get_cover_image %}
+    <div class="bg par-elem" data-bg="{% if cover_image is not None %} {{ cover_image.url }} {% else %}  {% static 'images/bg/2.jpg' %} {% endif %}" data-scrollax="properties: { translateY: '30%' }"></div>
+    {% endwith %}
     <div class="overlay"></div>
     <div class="bubble-bg"></div>
     <div class="list-single-header absolute-header fl-wrap">
@@ -478,7 +479,10 @@
     </div>
 </section>
 <!--  section  end-->
-<img id="foto" src="https://avatars0.githubusercontent.com/u/3456749">
+<form id="cover_form" action="{% url 'add_place_image' %}" method="POST" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ cover_form }}
+</form>
 {% include 'places/crop_cover_modal.html' %}
 {% endblock %}
 {% block extrajs %}
@@ -496,7 +500,7 @@
 
         input.addEventListener('change', function (e) {
             var files = e.target.files;
-            var done = function (url) {
+            var done = function (url) {                
                 input.value = '';
                 image.src = url;          
                 modalShow();
@@ -507,7 +511,8 @@
 
             if (files && files.length > 0) {
                 file = files[0];
-
+                filename = file.name.indexOf('.')<1?file.name:file.name.split('.')[0];
+                $('#id_image_name').val(filename);                
                 if (URL) {
                     done(URL.createObjectURL(file));
                 } else if (FileReader) {
@@ -539,33 +544,17 @@
             $modal.fadeOut();            
 
             if (cropper) {
-                canvas = cropper.getCroppedCanvas();                
-                                      
-                canvas.toBlob(function (blob) {
-                    var formData = new FormData();
-                    var place = '{{ object.id }}';
+                canvas = cropper.getCroppedCanvas({
+                    width: 1920,
+                    height: 600,
+                });                
 
-                    formData.append('image', blob);
-                    formData.append('place', place);
-                    formData.append('is_cover', true);
-
-                    $.ajax("{% url 'add_place_image' %}", {
-                        method: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,                      
-
-                        success: function () {
-                            console.log('asd');
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        },
-                    });
-                });
+                $('#id_is_cover').val(true);
+                $('#id_image').val(canvas.toDataURL());                
 
                 cropper.destroy();
                 cropper = null;
+                $('#cover_form').submit();
             }
             
         });

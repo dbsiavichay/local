@@ -1,6 +1,6 @@
 from django.forms import ModelForm, inlineformset_factory, CharField, FloatField, BaseInlineFormSet
-from django.forms.widgets import CheckboxSelectMultiple, HiddenInput
-from .models import Place, Local, LocalSocial, Social
+from django.forms.widgets import CheckboxSelectMultiple, HiddenInput, TextInput
+from .models import Place, PlaceImage,Local, LocalSocial, Social
 
 from django.contrib.gis.geos import Point
 
@@ -24,6 +24,31 @@ class PlaceForm(ModelForm):
 		if commit:
 			place.save()            
 		return place
+
+class PlaceImageForm(ModelForm):	
+	image = CharField(widget=HiddenInput)
+	image_name = CharField(widget=HiddenInput)
+
+	class Meta:
+		model = PlaceImage		
+		exclude = ('image',)
+		widgets = {				
+			'is_cover': HiddenInput,
+			'place': HiddenInput,
+		}
+
+	def save(self, commit=True):
+		from .utis import base64_to_image
+
+		place_image = super().save(commit=False)		
+		data, ext = base64_to_image(self.cleaned_data['image'])				
+		file_name = '%s.%s' % (self.cleaned_data['image_name'], ext)
+		place_image.image.save(file_name, data)
+
+		if commit:
+			place_image.save()            
+		return place_image
+
 
 class LocalForm(PlaceForm):
     class Meta:
