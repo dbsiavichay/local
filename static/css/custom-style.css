@@ -19,3 +19,28 @@
     color: #4DB7FE;
     cursor: pointer;
 }
+
+.update-place {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    color: #4DB7FE;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.workingswitch {
+    width: 125px;
+}
+
+.workingswitch .onoffswitch-inner:before {
+    content: "ABIERTO";    
+}
+.workingswitch .onoffswitch-inner:after {
+    content: "CERRADO";
+    background-color: #fe4f4d;    
+}   
+
+.workingswitch .onoffswitch-switch {
+    right: 91px;
+}

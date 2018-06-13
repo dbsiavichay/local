@@ -1,0 +1,9 @@
+{% load widget_tweaks %}
+
+<div class="onoffswitch workingswitch">    
+    {{ field|add_class:"onoffswitch-checkbox" }}
+    <label class="onoffswitch-label" for="{{ field.id_for_label }}">
+	    <span class="onoffswitch-inner"></span>
+	    <span class="onoffswitch-switch"></span>
+    </label>
+</div>

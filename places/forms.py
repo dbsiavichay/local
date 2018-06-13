@@ -1,6 +1,6 @@
 from django.forms import ModelForm, inlineformset_factory, CharField, FloatField, BaseInlineFormSet
-from django.forms.widgets import CheckboxSelectMultiple, HiddenInput, TextInput
-from .models import Place, PlaceImage,Local, LocalSocial, Social
+from django.forms.widgets import CheckboxSelectMultiple, HiddenInput, TextInput, Select
+from .models import Place, PlaceImage,Local, LocalSocial, LocalSchedule
 
 from django.contrib.gis.geos import Point
 
@@ -92,4 +92,38 @@ class LocalSocialForm(ModelForm):
 			social = socials.pop(0)
 			self.fields['social'].initial = social
 			self.fields['url'].widget.attrs.update({'placeholder': social.url})
-	
+
+class LocalScheduleFormset(BaseInlineFormSet):
+	def clean(self):		
+		for form in self.forms:
+			cleaned_data = form.clean()						
+			id = cleaned_data.get('id', None)
+			name = cleaned_data.get('name', None)
+			if id and not name:
+				cleaned_data['DELETE'] = True
+			
+		super().clean()
+
+class LocalScheduleForm(ModelForm):
+	name = CharField(
+		widget = HiddenInput,		
+		required = False
+	)
+
+	class Meta:
+		model = LocalSchedule
+		exclude = ('local',)
+		widgets = {
+			'open_hour': Select,
+			'close_hour': Select,
+		}
+
+	def __init__(self, *args, **kwargs):
+		days = kwargs.pop('days', None)
+		super().__init__(*args, **kwargs)
+		if days is None:
+			return
+		
+		day, name = days.pop(0)
+		self.fields['day'].initial = day
+		self.fields['name'].initial = name

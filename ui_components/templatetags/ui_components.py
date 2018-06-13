@@ -174,8 +174,9 @@ def ui_input(field, icon=None):
     }
 
 @register.inclusion_tag('ui_components/inputs/select.html')
-def ui_select(field):
+def ui_select(field, placeholder=None):
     return {
+        'placeholder': placeholder if placeholder else '--- Seleccionar ---',
         'field':field,        
     }
 
@@ -183,6 +184,12 @@ def ui_select(field):
 def ui_datepicker(field):    
     return {
         'field':field,        
+    }
+
+@register.inclusion_tag('ui_components/inputs/switch.html')
+def ui_switch(field):    
+    return {
+        'field':field,            
     }
 
 ###BUTTONS####

@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+import datetime as dt
 
 class Tag(models.Model):
 	name = models.CharField(max_length=16)
@@ -102,8 +103,25 @@ class LocalSocial(models.Model):
 class LocalSchedule(models.Model):
 	class Meta:
 		verbose_name = 'horario'
+		unique_together = ('day', 'local')
 
-	day = models.PositiveSmallIntegerField(verbose_name='día')
-	open_hour = models.TimeField(verbose_name='hora de apertura')
-	close_hour = models.TimeField(verbose_name='hora de cierre')
+	MONDAY = 1
+	TUESDAY = 2
+	WEDNESDAY = 3
+	THURSDAY = 4
+	FRIDAY = 5
+	SATURDAY = 6
+	SUNDAY = 7
+
+	DAY_CHOICES = (
+		(MONDAY, 'Lunes'),(TUESDAY, 'Martes'),(WEDNESDAY, 'Miercoles'),(THURSDAY, 'Jueves'),(FRIDAY, 'Viernes'),(SATURDAY, 'Sábado'),(SUNDAY, 'Domingo'),
+	)
+	
+	HOURS_CHOICES = [(i, dt.time(i).strftime('%I %p')) for i in range(5,24)]		
+		
+
+	day = models.PositiveSmallIntegerField(choices = DAY_CHOICES, verbose_name='día')
+	is_open = models.BooleanField(default=True)
+	open_hour = models.TimeField(blank=True, null=True, choices=HOURS_CHOICES, verbose_name='hora de apertura')
+	close_hour = models.TimeField(blank=True, null=True, choices=HOURS_CHOICES, verbose_name='hora de cierre')
 	local = models.ForeignKey(Local, on_delete=models.CASCADE)

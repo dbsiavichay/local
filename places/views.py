@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.forms import inlineformset_factory
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
-from .models import Place, PlaceImage ,Local, Social, LocalSocial
-from .forms import PlaceImageForm ,LocalForm, LocalSocialForm, LocalSocialFormset
+from .models import Place, PlaceImage ,Local, Social, LocalSocial, LocalSchedule
+from .forms import PlaceImageForm ,LocalForm, LocalSocialForm, LocalSocialFormset, LocalScheduleForm
 
 from .utils import base64_to_image
 
@@ -48,6 +48,7 @@ class LocalCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 		context = super(LocalCreateView, self).get_context_data(**kwargs)
 		context['localsocial_formset'] = self.get_localsocial_formset()
+		context['localschedule_formset'] = self.get_localschedule_formset()
 
 		return context
 
@@ -62,6 +63,19 @@ class LocalCreateView(CreateView):
 		)
 		
 		formset = Formset(post_data, form_kwargs={'socials':socials})
+		return formset
+
+	def get_localschedule_formset(self):
+		post_data = self.request.POST if self.request.method == 'POST' else None
+		days = [d for d in LocalSchedule.DAY_CHOICES]
+
+		Formset = inlineformset_factory(
+			Local, LocalSchedule, 		
+			form = LocalScheduleForm,
+			extra= len(days),
+		)
+		
+		formset = Formset(post_data, form_kwargs={'days':days})
 		return formset
 
 	def form_valid(self, form):
