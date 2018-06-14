@@ -52,6 +52,7 @@
 
                         {{ form.errors }}
                         {{ localsocial_formset.errors }}
+                        {{ localschedule_formset.errors }}
                         <!-- profile-edit-container--> 
                         <div class="profile-edit-container add-list-container">
                             <div class="profile-edit-header fl-wrap">
@@ -127,18 +128,19 @@
                                 <div class="row">
                                 {% for form in localschedule_formset %}
                                 {{ form.id }}
+                                {{ form.day }}
                                     <div class="col-sm-6 col-md-4">
                                         <div class="act-widget fl-wrap">
                                             <div class="act-widget-header">
-                                                <h4>{{ form.name.value }}</h4>
+                                                <h4>{{ form.name.initial }}</h4>
                                                 {% ui_switch form.is_open %}
                                             </div>
                                             <div class="row">
                                                 <div class="col-xs-6">
-                                                    {% ui_select form.open_hour %}
+                                                    {% ui_input form.open_hour %}
                                                 </div>
                                                 <div class="col-xs-6">
-                                                    {% ui_select form.close_hour %}
+                                                    {% ui_input form.close_hour %}
                                                 </div>
                                             </div>  
                                         </div>                                        

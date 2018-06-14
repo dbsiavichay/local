@@ -116,12 +116,17 @@ class LocalSchedule(models.Model):
 	DAY_CHOICES = (
 		(MONDAY, 'Lunes'),(TUESDAY, 'Martes'),(WEDNESDAY, 'Miercoles'),(THURSDAY, 'Jueves'),(FRIDAY, 'Viernes'),(SATURDAY, 'Sábado'),(SUNDAY, 'Domingo'),
 	)
-	
-	HOURS_CHOICES = [(i, dt.time(i).strftime('%I %p')) for i in range(5,24)]		
 		
-
 	day = models.PositiveSmallIntegerField(choices = DAY_CHOICES, verbose_name='día')
 	is_open = models.BooleanField(default=True)
-	open_hour = models.TimeField(blank=True, null=True, choices=HOURS_CHOICES, verbose_name='hora de apertura')
-	close_hour = models.TimeField(blank=True, null=True, choices=HOURS_CHOICES, verbose_name='hora de cierre')
-	local = models.ForeignKey(Local, on_delete=models.CASCADE)
+	open_hour = models.TimeField(blank=True, null=True, verbose_name='hora de apertura')
+	close_hour = models.TimeField(blank=True, null=True,  verbose_name='hora de cierre')
+	local = models.ForeignKey(Local, on_delete=models.CASCADE, related_name='schedule')
+
+	def get_day(self):
+		return dict(self.DAY_CHOICES).get(self.day)
+
+	def get_hours(self):
+		start = self.open_hour.strftime('%I %p')
+		ends = self.close_hour.strftime('%I %p')
+		return '%s - %s' % (start, ends)

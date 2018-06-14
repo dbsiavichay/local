@@ -1,8 +1,10 @@
-from django.forms import ModelForm, inlineformset_factory, CharField, FloatField, BaseInlineFormSet
+from django.forms import ModelForm, inlineformset_factory, CharField, FloatField, BaseInlineFormSet, ValidationError
 from django.forms.widgets import CheckboxSelectMultiple, HiddenInput, TextInput, Select
 from .models import Place, PlaceImage,Local, LocalSocial, LocalSchedule
 
 from django.contrib.gis.geos import Point
+
+import datetime as dt
 
 class PlaceForm(ModelForm):
 	class Meta:
@@ -93,16 +95,6 @@ class LocalSocialForm(ModelForm):
 			self.fields['social'].initial = social
 			self.fields['url'].widget.attrs.update({'placeholder': social.url})
 
-class LocalScheduleFormset(BaseInlineFormSet):
-	def clean(self):		
-		for form in self.forms:
-			cleaned_data = form.clean()						
-			id = cleaned_data.get('id', None)
-			name = cleaned_data.get('name', None)
-			if id and not name:
-				cleaned_data['DELETE'] = True
-			
-		super().clean()
 
 class LocalScheduleForm(ModelForm):
 	name = CharField(
@@ -114,16 +106,43 @@ class LocalScheduleForm(ModelForm):
 		model = LocalSchedule
 		exclude = ('local',)
 		widgets = {
+			'day': HiddenInput,
 			'open_hour': Select,
-			'close_hour': Select,
+			'close_hour': Select
 		}
 
 	def __init__(self, *args, **kwargs):
 		days = kwargs.pop('days', None)
 		super().__init__(*args, **kwargs)
-		if days is None:
-			return
+
+		_range = [i for i in range(7, 24)] + [i for i in range(7)]
+		HOURS_CHOICES = [(str(dt.time(i)), dt.time(i).strftime('%I %p')) for i in _range]
 		
-		day, name = days.pop(0)
-		self.fields['day'].initial = day
-		self.fields['name'].initial = name
+		self.fields['open_hour'].widget.choices = HOURS_CHOICES
+		self.fields['close_hour'].widget.choices = HOURS_CHOICES
+		
+		
+		if self.instance.pk is not None:
+			self.fields['name'].initial = self.instance.get_day()
+		elif days is not None:
+			day, name = days.pop(0)
+			self.fields['day'].initial = day
+			self.fields['name'].initial = name
+			if day == LocalSchedule.SUNDAY:
+				self.fields['is_open'].initial = False			
+
+	def clean(self):
+		cleaned_data = super().clean()
+		is_open = cleaned_data.get('is_open')
+		open_hour = cleaned_data.get('open_hour')
+		close_hour = cleaned_data.get('close_hour')
+
+		if not is_open: 
+			return
+
+        # if not open_hour or not close_hour:
+        #     raise ValidationError(
+        #         "Did not send for 'help' in the subject despite "                
+        #     )   
+		if not open_hour: self.add_error('open_hour', 'Este campo es requerido.')         
+		if not close_hour: self.add_error('close_hour', 'Este campo es requerido.')         

@@ -339,13 +339,18 @@
                             <div class="box-widget-content">
                                 <span class="current-status"><i class="fa fa-clock-o"></i> Abierto</span>
                                 <ul>
-                                    <li><span class="opening-hours-day">Lunes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Martes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Miercoles </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Jueves </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Viernes </span><span class="opening-hours-time">9 AM - 5 PM</span></li>
-                                    <li><span class="opening-hours-day">Sábado </span><span class="opening-hours-time">9 AM - 3 PM</span></li>
-                                    <li><span class="opening-hours-day">Domingo </span><span class="opening-hours-time">Cerrado</span></li>
+                                    {% for item in object.schedule.all %}
+                                    <li>
+                                        <span class="opening-hours-day">{{ item.get_day }} </span>
+                                        <span class="opening-hours-time">
+                                            {% if item.is_open %}
+                                            {{ item.get_hours }}
+                                            {% else %}
+                                            Cerrado
+                                            {% endif %}
+                                        </span>
+                                    </li>
+                                    {% endfor %}                                    
                                 </ul>
                             </div>
                         </div>

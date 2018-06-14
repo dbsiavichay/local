@@ -80,8 +80,9 @@ class LocalCreateView(CreateView):
 
 	def form_valid(self, form):
 		localsocial_formset = self.get_localsocial_formset()
+		localschedule_formset = self.get_localschedule_formset()
 
-		if localsocial_formset.is_valid():
+		if localsocial_formset.is_valid() and localschedule_formset.is_valid():
 			self.object = form.save(commit=False)
 			self.object.user = self.request.user
 			self.object.save()
@@ -89,6 +90,9 @@ class LocalCreateView(CreateView):
 
 			localsocial_formset.instance = self.object
 			localsocial_formset.save()
+
+			localschedule_formset.instance = self.object
+			localschedule_formset.save()
 	
 			return redirect(reverse_lazy('detail_local', args=[self.object.id]))
 		else:
@@ -102,6 +106,7 @@ class LocalUpdateView(UpdateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['localsocial_formset'] = self.get_localsocial_formset()
+		context['localschedule_formset'] = self.get_localschedule_formset()
 
 		return context
 
@@ -119,12 +124,26 @@ class LocalUpdateView(UpdateView):
 		formset = Formset(post_data, instance=self.object, form_kwargs={'socials':socials})
 		return formset
 
+	def get_localschedule_formset(self):
+		post_data = self.request.POST if self.request.method == 'POST' else None		
+
+		Formset = inlineformset_factory(
+			Local, LocalSchedule, 		
+			form = LocalScheduleForm,
+			extra= 0,
+		)
+		
+		formset = Formset(post_data, instance=self.object)
+		return formset
+
 	def form_valid(self, form):
 		localsocial_formset = self.get_localsocial_formset()
+		localschedule_formset = self.get_localschedule_formset()
 		
-		if localsocial_formset.is_valid():
+		if localsocial_formset.is_valid() and localschedule_formset.is_valid():
 			form.save()			
 			localsocial_formset.save()
+			localschedule_formset.save()
 			return redirect(reverse_lazy('detail_local', args=[self.object.id]))
 		else:
 			return self.form_invalid(form)
