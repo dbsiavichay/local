@@ -27,30 +27,47 @@ class PlaceForm(ModelForm):
 			place.save()            
 		return place
 
-class PlaceImageForm(ModelForm):	
-	image = CharField(widget=HiddenInput)
-	image_name = CharField(widget=HiddenInput)
-
+class PlaceImageForm(ModelForm):
 	class Meta:
 		model = PlaceImage		
-		exclude = ('image',)
+		fields = '__all__'
 		widgets = {				
 			'is_cover': HiddenInput,
 			'place': HiddenInput,
 		}
+	
+	def __init__(self, *args, **kwargs):
+		place = kwargs.pop('place', None)
+		super().__init__(*args, **kwargs)
+
+		if place is not None:
+			self.fields['place'].initial = place
+
+class PlaceBase64ImageForm(PlaceImageForm):		
+	base64image = CharField(widget = HiddenInput,)	
+
+	class Meta(PlaceImageForm.Meta):		
+		fields = ('is_cover', 'place',)
 
 	def save(self, commit=True):
-		from .utis import base64_to_image
+		from .utils import base64_to_image
 
-		place_image = super().save(commit=False)		
-		data, ext = base64_to_image(self.cleaned_data['image'])				
-		file_name = '%s.%s' % (self.cleaned_data['image_name'], ext)
-		place_image.image.save(file_name, data)
+		base64image = self.cleaned_data['base64image']
+		place = self.cleaned_data['place']
+		today = dt.datetime.today().strftime("%Y%m%d%H%M%S")
+
+		if self.instance.id is not None and self.instance.image:
+			self.instance.image.delete()
+
+		obj = super().save(commit=False)
+	
+		data, ext = base64_to_image(base64image)				
+		file_name = 'cover-%s-%s.%s' % (place.id, today, ext)
+		obj.image.save(file_name, data)
 
 		if commit:
-			place_image.save()            
-		return place_image
-
+			obj.save()            
+		return obj
 
 class LocalForm(PlaceForm):
     class Meta:

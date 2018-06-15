@@ -36,13 +36,22 @@ class Place(models.Model):
 	def __str__(self):
 		return self.name
 
-	def get_cover_image(self):
-		place_images = self.images.filter(is_cover=True)
+	def get_cover_instance(self):
+		instances = self.images.filter(is_cover=True)
 
-		if len(place_images) > 0 and place_images[0].image:
-			return place_images[0].image
-		else:
-			return None
+		if len(instances) > 0:
+			return instances[0]		
+
+	def get_cover_image(self):
+		instance = self.get_cover_instance()
+
+		if instance and instance.image:
+			return instance.image		
+
+	def get_gallery(self):
+		instances = self.images.filter(is_cover=False)
+		images = [i.image for i in instances if i.image]
+		return images
 
 class PlaceImage(models.Model):
 	class Meta:

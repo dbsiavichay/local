@@ -14,7 +14,7 @@
     <label class="cover-overlay">
         <i class="fa fa-image"></i>
         <div>Cambiar foto de portada</div>
-        <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+        <input type="file" class="sr-only" id="base64input" accept="image/*">
     </label>
     {% with cover_image=object.get_cover_image %}
     <div class="bg par-elem" data-bg="{% if cover_image is not None %} {{ cover_image.url }} {% else %}  {% static 'images/bg/2.jpg' %} {% endif %}" data-scrollax="properties: { translateY: '30%' }"></div>
@@ -167,66 +167,27 @@
                         </div>
                         <!-- gallery-items   -->
                         <div class="gallery-items grid-small-pad  list-single-gallery three-coulms lightgallery">
-                            <!-- 1 -->
+                            {% for image in object.get_gallery %}
                             <div class="gallery-item">
                                 <div class="grid-item-holder">
                                     <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
+                                        <img  src="{{ image.url }}"   alt="">
+                                        <a href="{{ image.url }}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 1 end -->
-                            <!-- 2 -->
-                            <div class="gallery-item">
-                                <div class="grid-item-holder">
-                                    <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
-                                    </div>
+                            {% endfor %}        
+                        </div>
+
+                        <div class="add-list-media-wrap">
+                            <form class="fuzone" action="{% url 'add_place_image' %}" method="POST" enctype="multipart/form-data" novalidate>
+                                {% csrf_token %}
+                                {{ image_form.place }}
+                                <div class="fu-text">
+                                    <span><i class="fa fa-picture-o"></i> Click aquí o arrastre sus imagenes para subir</span>
                                 </div>
-                            </div>
-                            <!-- 2 end -->
-                            <!-- 3 -->
-                            <div class="gallery-item">
-                                <div class="grid-item-holder">
-                                    <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 3 end -->
-                            <!-- 4 -->
-                            <div class="gallery-item">
-                                <div class="grid-item-holder">
-                                    <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 4 end -->
-                            <!-- 5 -->
-                            <div class="gallery-item">
-                                <div class="grid-item-holder">
-                                    <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 5 end -->
-                            <!-- 7 -->
-                            <div class="gallery-item">
-                                <div class="grid-item-holder">
-                                    <div class="box-item">
-                                        <img  src="{% static 'images/all/single/1.jpg' %}"   alt="">
-                                        <a href="{% static 'images/all/single/1.jpg' %}" class="gal-link popup-image"><i class="fa fa-search"  ></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 7 end -->
+                                <input type="file" id="id_image" name='image' onchange="form.submit()" class="upload">
+                            </form>
                         </div>
                         <!-- end gallery items -->                                 
                     </div>
@@ -472,7 +433,7 @@
     </div>
 </section>
 <!--  section  end-->
-<form id="cover_form" action="{% url 'add_place_image' %}" method="POST" enctype="multipart/form-data" novalidate>
+<form id="cover_form" action="{% url 'add_place_base64image' %}" method="POST" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {{ cover_form }}
 </form>
@@ -485,8 +446,8 @@
     <script>
 
     $(function () {
-        var image = document.getElementById('image');
-        var input = document.getElementById('input');
+        var image = document.getElementById('cropper_image');
+        var input = document.getElementById('base64input');
           
          var $modal = $('#cover-modal');
          var cropper;   
@@ -504,8 +465,7 @@
 
             if (files && files.length > 0) {
                 file = files[0];
-                filename = file.name.indexOf('.')<1?file.name:file.name.split('.')[0];
-                $('#id_image_name').val(filename);                
+                      
                 if (URL) {
                     done(URL.createObjectURL(file));
                 } else if (FileReader) {
@@ -543,7 +503,7 @@
                 });                
 
                 $('#id_is_cover').val(true);
-                $('#id_image').val(canvas.toDataURL());                
+                $('#id_base64image').val(canvas.toDataURL());                
 
                 cropper.destroy();
                 cropper = null;
@@ -553,7 +513,9 @@
         });
 
 
-       
+        // $('#id_image').on('change', function () {
+        //     $('#gallery-form').submit();
+        // });  
 
 
 
